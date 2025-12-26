@@ -1,141 +1,86 @@
-{
- "cells": [
-  {
-   "cell_type": "code",
-   "execution_count": 5,
-   "id": "78d53ac5-2a78-4a91-a749-3ac85c34ef59",
-   "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Overwriting app.py\n"
-     ]
+import streamlit as st
+import time
+
+# ตั้งค่าหน้าเว็บเบื้องต้น
+st.set_page_config(
+    page_title="การ์ดอวยพรพิเศษสำหรับคุณ",
+    page_icon="💌",
+    layout="centered"
+)
+
+# --- ส่วนตกแต่ง CSS ---
+st.markdown("""
+<style>
+    .card-container {
+        background-color: #ffffff;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        text-align: center;
+        border: 2px solid #f0f0f0;
     }
-   ],
-   "source": [
-    "%%writefile app.py\n",
-    "import streamlit as st\n",
-    "import time\n",
-    "\n",
-    "# ตั้งค่าหน้าเว็บเบื้องต้น\n",
-    "st.set_page_config(\n",
-    "    page_title=\"Merry Christmas\",\n",
-    "    page_icon=\"💌\",\n",
-    "    layout=\"centered\"\n",
-    ")\n",
-    "\n",
-    "# --- ส่วนตกแต่ง CSS เล็กน้อยเพื่อให้ดูเหมือนการ์ด ---\n",
-    "st.markdown(\"\"\"\n",
-    "<style>\n",
-    "    .card-container {\n",
-    "        background-color: #ffffff;\n",
-    "        padding: 40px;\n",
-    "        border-radius: 20px;\n",
-    "        box-shadow: 0 4px 15px rgba(0,0,0,0.1);\n",
-    "        text-align: center;\n",
-    "        border: 2px solid #f0f0f0;\n",
-    "    }\n",
-    "    .signature {\n",
-    "        color: #888;\n",
-    "        font-style: italic;\n",
-    "        margin-top: 20px;\n",
-    "    }\n",
-    "</style>\n",
-    "\"\"\", unsafe_allow_html=True)\n",
-    "\n",
-    "# --- ส่วนรับข้อมูล (Input) ---\n",
-    "st.sidebar.header(\"Happy\")\n",
-    "#theme = st.sidebar.selectbox(\"เลือกโอกาสพิเศษ:\", [\"วันเกิด 🎂\", \"ปีใหม่ 🎉\", \"วาเลนไทน์ 💖\"])\n",
-    "#sender_name = st.sidebar.text_input(\"ชื่อผู้ส่ง:\", \"จากโอม\")\n",
-    "receiver_name = st.text_input(\"lip_liw\")\n",
-    "\n",
-    "# --- ส่วนแสดงผล (Display) ---\n",
-    "if receiver_name:\n",
-    "    st.write(\"---\") # เส้นคั่น\n",
-    "    \n",
-    "    # ปุ่มเปิดการ์ด\n",
-    "    if st.button(f\"💌 คลิกเพื่อเปิดการ์ดถึง {receiver_name}\"):\n",
-    "        \n",
-    "        # แสดง Progress bar นิดนึงเพื่อความตื่นเต้น\n",
-    "        with st.spinner('กำลังเขียนคำอวยพร...'):\n",
-    "            time.sleep(1.5)\n",
-    "        \n",
-    "        # เช็คธีมเพื่อเลือกสีและ Animation\n",
-    "        if \"วันเกิด\" in theme:\n",
-    "            bg_color = \"#FFF8DC\" # สีครีม\n",
-    "            msg_color = \"#FF4500\"\n",
-    "            emoji_decor = \"🎂 🎁 🍰\"\n",
-    "            st.balloons() # ปล่อยลูกโป่ง\n",
-    "            main_msg = f\"สุขสันต์วันเกิดนะ {receiver_name}!\"\n",
-    "            sub_msg = \"ขอให้มีความสุขมากๆ คิดสิ่งใดสมปรารถนา ร่างกายแข็งแรงนะ!\"\n",
-    "            \n",
-    "        elif \"ปีใหม่\" in theme:\n",
-    "            bg_color = \"#E0F7FA\" # สีฟ้าอ่อน\n",
-    "            msg_color = \"#006064\"\n",
-    "            emoji_decor = \"🎉 🎆 🥂\"\n",
-    "            st.snow() # โปรยหิมะ\n",
-    "            main_msg = f\"สวัสดีปีใหม่แด่ {receiver_name}!\"\n",
-    "            sub_msg = \"ขอให้ปีนี้เป็นปีที่ดี เริ่มต้นใหม่ด้วยความสดใส และประสบความสำเร็จในทุกเรื่องเลย\"\n",
-    "            \n",
-    "        else: # วาเลนไทน์\n",
-    "            bg_color = \"#FFF0F5\" # สีชมพูอ่อน\n",
-    "            msg_color = \"#C71585\"\n",
-    "            emoji_decor = \"💖 🌹 🍫\"\n",
-    "            st.balloons()\n",
-    "            main_msg = f\"Happy Valentine's Day {receiver_name}\"\n",
-    "            sub_msg = \"ขอบคุณที่อยู่เคียงข้างกันนะ รักและห่วงใยเสมอ\"\n",
-    "\n",
-    "        # แสดงผลการ์ดโดยใช้ HTML ใน Markdown เพื่อจัดหน้าสวยๆ\n",
-    "        html_card = f\"\"\"\n",
-    "        <div class=\"card-container\" style=\"background-color: {bg_color};\">\n",
-    "            <h1 style=\"color: {msg_color};\">{emoji_decor}</h1>\n",
-    "            <h2 style=\"color: {msg_color}; margin-top: 20px;\">{main_msg}</h2>\n",
-    "            <p style=\"font-size: 1.2em; color: #555; margin-top: 20px;\">\n",
-    "                {sub_msg}\n",
-    "            </p>\n",
-    "            <div class=\"signature\">\n",
-    "                ด้วยรักและห่วงใย<br>\n",
-    "                {sender_name}\n",
-    "            </div>\n",
-    "        </div>\n",
-    "        \"\"\"\n",
-    "        st.markdown(html_card, unsafe_allow_html=True)\n",
-    "        st.success(\"ส่งความสุขเรียบร้อยแล้ว! 🥰\")\n",
-    "\n",
-    "else:\n",
-    "    st.info(\"👈 พิมพ์ชื่อผู้รับ แล้วกด Enter เพื่อเริ่มสร้างการ์ดครับ\")"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "id": "9ea41a10-3a9f-452f-9ec7-10d1bdaf337f",
-   "metadata": {},
-   "outputs": [],
-   "source": []
-  }
- ],
- "metadata": {
-  "kernelspec": {
-   "display_name": "Python 3 (ipykernel)",
-   "language": "python",
-   "name": "python3"
-  },
-  "language_info": {
-   "codemirror_mode": {
-    "name": "ipython",
-    "version": 3
-   },
-   "file_extension": ".py",
-   "mimetype": "text/x-python",
-   "name": "python",
-   "nbconvert_exporter": "python",
-   "pygments_lexer": "ipython3",
-   "version": "3.14.0"
-  }
- },
- "nbformat": 4,
- "nbformat_minor": 5
-}
+    .signature {
+        color: #888;
+        font-style: italic;
+        margin-top: 20px;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+# --- ส่วนรับข้อมูล ---
+st.sidebar.header("⚙️ ตั้งค่าการ์ด")
+theme = st.sidebar.selectbox("เลือกโอกาสพิเศษ:", ["วันเกิด 🎂", "ปีใหม่ 🎉", "วาเลนไทน์ 💖"])
+sender_name = st.sidebar.text_input("ชื่อผู้ส่ง:", "จาก... (ใส่ชื่อคุณ)")
+receiver_name = st.text_input("กรุณาพิมพ์ชื่อผู้รับการ์ด 👇", "")
+
+# --- ส่วนแสดงผล ---
+if receiver_name:
+    st.write("---")
+    
+    if st.button(f"💌 คลิกเพื่อเปิดการ์ดถึง {receiver_name}"):
+        
+        with st.spinner('กำลังเขียนคำอวยพร...'):
+            time.sleep(1.5)
+        
+        if "วันเกิด" in theme:
+            bg_color = "#FFF8DC"
+            msg_color = "#FF4500"
+            emoji_decor = "🎂 🎁 🍰"
+            st.balloons()
+            main_msg = f"สุขสันต์วันเกิดนะ {receiver_name}!"
+            sub_msg = "ขอให้มีความสุขมากๆ คิดสิ่งใดสมปรารถนา ร่างกายแข็งแรงนะ!"
+            
+        elif "ปีใหม่" in theme:
+            bg_color = "#E0F7FA"
+            msg_color = "#006064"
+            emoji_decor = "🎉 🎆 🥂"
+            st.snow()
+            main_msg = f"สวัสดีปีใหม่แด่ {receiver_name}!"
+            sub_msg = "ขอให้ปีนี้เป็นปีที่ดี เริ่มต้นใหม่ด้วยความสดใส และประสบความสำเร็จในทุกเรื่องเลย"
+            
+        else:
+            bg_color = "#FFF0F5"
+            msg_color = "#C71585"
+            emoji_decor = "💖 🌹 🍫"
+            st.balloons()
+            main_msg = f"Happy Valentine's Day {receiver_name}"
+            sub_msg = "ขอบคุณที่อยู่เคียงข้างกันนะ รักและห่วงใยเสมอ"
+
+        html_card = f"""
+        <div class="card-container" style="background-color: {bg_color};">
+            <h1 style="color: {msg_color};">{emoji_decor}</h1>
+            <h2 style="color: {msg_color}; margin-top: 20px;">{main_msg}</h2>
+            <p style="font-size: 1.2em; color: #555; margin-top: 20px;">
+                {sub_msg}
+            </p>
+            <div class="signature">
+                ด้วยรักและห่วงใย<br>
+                {sender_name}
+            </div>
+        </div>
+        """
+        st.markdown(html_card, unsafe_allow_html=True)
+        st.success("ส่งความสุขเรียบร้อยแล้ว! 🥰")
+
+else:
+    st.info("👈 พิมพ์ชื่อผู้รับ แล้วกด Enter เพื่อเริ่มสร้างการ์ดครับ")
